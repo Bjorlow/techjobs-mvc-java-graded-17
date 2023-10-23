@@ -1,19 +1,19 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org/">
-<head th:replace="~{fragments :: head}">
-</head>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments :: head}"></head>
 <body>
-
 <div th:replace="~{fragments :: page-header}"></div>
 
+<!--container body-content" is used to wrap the main content of the page -->
 <div class="container body-content">
+    <!-- Set the page title with a capitalized version of the title variable -->
+    <h1 th:text="${#strings.capitalizeWords(title)}"></h1>
 
-  <h1 th:text="${#strings.capitalizeWords(title)}"></h1>
+    <form th:action="@{/search/results}" method="post">
+        <h2>Search by:</h2>
 
-  <form th:action="@{/search/results}" method = "post">
-    <h2>Search by:</h2>
-
-    <p>
+        <p>
+            <!-- Iterate through the list of columns and create radio buttons for each -->
             <span th:each="column : ${columns}">
                 <input
                         type="radio"
@@ -21,24 +21,49 @@
                         th:id="${column.key}"
                         th:value="${column.key}"
                         th:checked="${column.key == 'all'}"/>
+                <!-- Label for radio buttons showing the column value -->
                 <label th:for="${column.key}" th:text="${column.value}"></label>
             </span>
+        </p>
 
-    </p>
+        <p>
+            <label for="searchTerm">Keyword:</label>
+            <input type="text" name="searchTerm" id="searchTerm" />
+        </p>
+   <!-- submit button to initiate the search-->
+        <input type="submit" value="Search" />
+    </form>
 
-    <p>
-      <label for="searchTerm">Keyword:</label>
-      <input type="text" name="searchTerm" id="searchTerm" />
-    </p>
+       <!-- A horizontal line used to separate the search form from the search results-->
+    <hr />
 
-    <input type="submit" value="Search" />
-  </form>
-
-  <hr />
-
-  <!-- TODO #4 - Loop over the search results to display all job fields. -->
-
+    <!-- Loop over the search results to display all job fields -->
+    <div th:each="job : ${jobs}">
+        <table class="table table-bordered">
+            <thead>
+            <!-- Table Header for job details-->
+            <tr>
+                <th>ID</th>
+                <th>Job Name</th>
+                <th>Employer</th>
+                <th>Location</th>
+                <th>Position Type</th>
+                <th>Core Competency</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <!-- Populate table body with job data -->
+                <td th:text="${job.id}"></td>
+                <td th:text="${job.name}"></td>
+                <td th:text="${job.employer.value}"></td>
+                <td th:text="${job.location.value}"></td>
+                <td th:text="${job.positionType.value}"></td>
+                <td th:text="${job.coreCompetency.value}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
 </div>
-
 </body>
 </html>

@@ -1,18 +1,40 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org/">
-<head th:replace="~{fragments :: head}">
-</head>
+<head th:replace="~{fragments :: head}"></head>
 <body>
-
 <div th:replace="~{fragments :: page-header}"></div>
-
 <div class="container body-content">
-
-  <h1 th:text="${#strings.capitalizeWords(title)}"></h1>
-
-  <!-- TODO #1 - Use a loop to display job results in a table. -->
-
+    <!-- Set the page title with a capitalized version of the title variable -->
+    <h1 th:text="${#strings.capitalizeWords(title)}"></h1>
+    <!-- Task #1 - Loop to display job listings -->
+    <!-- Iterate through the list of jobs and create a table for each job and adds CSS class 'job-listing 'for styling -->
+    <div th:each="job : ${jobs}" class="job-listing">
+        <!--This line defines an HTML table with the classes "table" and "table-bordered." It's the container for displaying job details.-->
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <!-- Table headers for job details -->
+                <th>ID</th>
+                <th>Job Name</th>
+                <th>Employer</th>
+                <th>Location</th>
+                <th>Position Type</th>
+                <th>Core Competency</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <!-- Populate table body with job data -->
+                <td th:text="${job.id}"></td>
+                <td th:text="${job.name}"></td>
+                <td th:text="${job.employer.value}"></td>
+                <td th:text="${job.location.value}"></td>
+                <td th:text="${job.positionType.value}"></td>
+                <td th:text="${job.coreCompetency.value}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
 </div>
-
 </body>
 </html>

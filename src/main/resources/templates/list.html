@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org/">
+<html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{fragments :: head}"></head>
 
 <body>
@@ -7,25 +7,33 @@
 <div th:replace="~{fragments :: page-header}"></div>
 
 <div class="container body-content">
+  <!-- Set the title using Thymeleaf to capitalize the words -->
   <h1 th:text="${#strings.capitalizeWords(title)}"></h1>
-  <h2 class = "centered">View Jobs By Category</h2>
+  <h2 class="centered">View Jobs By Category</h2>
 </div>
 
 <table class="centeredTable">
   <tr>
     <th:block th:each="column : ${columns}">
-      <th th:text = "${column.value}"></th>
+      <!-- Loop through columns and display table headers -->
+      <th th:text="${column.value}"></th>
     </th:block>
   </tr>
   <tr>
     <!-- TODO #2: Complete the View Jobs By Category Table. -->
-
-    <td></td> <!-- Feel free to remove or modify this element if necessary. -->
+    <!-- Create a link for viewing all jobs -->
+    <td>
+      <a th:href="@{/list/jobs(column='all', value='all')}" th:text="'View All'"></a>
+      <!-- Add a "View All" link -->
+    </td>
 
     <td th:each="category : ${tableChoices}">
+      <!-- Loop through each category (employer, location, etc.) -->
       <ul>
         <li th:each="item : ${category.value}">
-          <a th:href="@{/list/jobs(column=${category.key},value=${item})}" th:text="${item}"></a>
+
+          <!-- Loop through items within each category and create links -->
+          <a th:href="@{/list/jobs(column=${category.key}, value=${item})}" th:text="${item}"></a>
         </li>
       </ul>
     </td>
